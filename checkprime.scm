@@ -13,11 +13,11 @@
   (map (lambda (x) (if (zero? (remainder n x)) #t #f)) l))
 
 ;; Function that returns true if an element exists in a list
-(define any (e l)
+(define (any e l)
   (> (count (lambda (x) (equal? x e)) l) 0))
 
 ;; Function that returns true if an element isn't in a list
-(define none (e l)
+(define (none e l)
   (= (count (lambda (x) (equal? x e)) l) 0))
 
 ;; Function to evaluate whether a given number is prime
@@ -28,4 +28,4 @@
         ((not (integer? n)) #f)
         ;((inexact? n) #f)
         ((any n primes) #t)
-        (else (not (any #t (isdiv n primes))))))
+        (else (none #t (isdiv n primes)))))
