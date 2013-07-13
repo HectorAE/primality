@@ -5,6 +5,7 @@
 (use-modules (srfi srfi-1))
 
 ;; Initial list of primes
+;; We could just reduce it to 2, but trivial is trivial
 (define primes
   '(2 3 5 7 11))
 
@@ -23,9 +24,9 @@
 ;; Function to evaluate whether a given number is prime
 ;; Note that as currently implemented, any large numbers with lowest
 ;; prime factors not in the primes list will appear prime.
-(define (checkprime n)
+(define (checkprime n pl)
   (cond ((<= n 1) #f) ; Preliminary conditions
         ((not (integer? n)) #f)
         ;((inexact? n) #f)
-        ((any n primes) #t)
-        (else (none #t (isdiv n primes)))))
+        ((any n pl) #t)
+        (else (none #t (isdiv n pl)))))
