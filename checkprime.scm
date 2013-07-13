@@ -1,6 +1,9 @@
 ;; Functions to check the primality of a number
 ;; Coded by Hector Escobedo
 
+;; The count procedure is in srfi-1
+(use-modules (srfi srfi-1))
+
 ;; Initial list of primes
 (define primes
   '(2 3 5 7 11))
@@ -9,20 +12,13 @@
 (define (isdiv n l)
   (map (lambda (x) (if (zero? (remainder n x)) #t #f)) l))
 
-;; Macro to construct recursive folding functions
-(define-syntax foldr
-  (syntax-rules ()
-    ((foldr x reverser name)
-     (define (name b l)
-       (cond ((null? l) (reverser x))
-             ((equal? b (car l)) x)
-             (else (name b (cdr l))))))))
+;; Function that returns true if an element exists in a list
+(define any (e l)
+  (> (count (lambda (x) (equal? x e)) l) 0))
 
-;; Function to check if a list contains an instance of some value
-(foldr #t not any)
-
-;; Function to check if a list contains no instances of some value
-(foldr #f not none)
+;; Function that returns true if an element isn't in a list
+(define none (e l)
+  (= (count (lambda (x) (equal? x e)) l) 0))
 
 ;; Function to evaluate whether a given number is prime
 ;; Note that as currently implemented, any large numbers with lowest
