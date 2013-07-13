@@ -9,17 +9,20 @@
 (define (isdiv n l)
   (map (lambda (x) (if (zero? (remainder n x)) #t #f)) l))
 
+;; Macro to construct recursive folding functions
+(define-syntax foldr
+  (syntax-rules ()
+    ((foldr x reverser name)
+     (define (name b l)
+       (cond ((null? l) (reverser x))
+             ((equal? b (car l)) x)
+             (else (name b (cdr l))))))))
+
 ;; Function to check if a list contains an instance of some value
-(define (any b l)
-  (cond ((null? l) #f)
-        ((equal? b (car l)) #t)
-        (else (any b (cdr l)))))
+(foldr #t not any)
 
 ;; Function to check if a list contains no instances of some value
-(define (none b l)
-  (cond ((null? l) #t)
-        ((equal? b (car l)) #f)
-        (else (none b (cdr l)))))
+(foldr #f not none)
 
 ;; Function to evaluate whether a given number is prime
 ;; Note that as currently implemented, any large numbers with lowest
